@@ -1,46 +1,125 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import { client } from '../../client.config.js'
+import PageHero from '../../components/PageHero.astro'
+import ReadyToWork from '../../components/ReadyToWork.astro'
 
-let posts = []
+interface Post {
+  title: string;
+  slug: string;
+  category: string;
+  createdAt: string;
+  image: { url: string };
+  excerpt: string;
+}
+
+let posts: Post[] = []
 try {
   const res = await fetch(`${client.cmsUrl}/api/blog?where[tenant.slug][equals]=${client.tenantSlug}&limit=20&sort=-createdAt`)
   posts = (await res.json()).docs || []
 } catch {}
+
+// Fallback to mock data for demonstration if no posts are found
+if (posts.length === 0) {
+  posts = [
+    {
+      title: "Sustainable Gardening Tips for Every Home",
+      slug: "sustainable-gardening-tips",
+      category: "Equipment, Flower",
+      createdAt: "2025-04-11T10:00:00Z",
+      image: { url: "/images/blog/sustainable-gardening-tips.png" },
+      excerpt: "Learn how to create a beautiful, eco-friendly garden that thrives with minimal environmental impact and maximum beauty."
+    },
+    {
+      title: "Organic Gardening Techniques for Beginners",
+      slug: "organic-gardening-techniques",
+      category: "Indoor, Organic",
+      createdAt: "2025-04-11T10:00:00Z",
+      image: { url: "/images/blog/organic-gardening-techniques.png" },
+      excerpt: "Discover the fundamentals of organic gardening, from soil preparation to natural pest control methods for a healthy harvest."
+    },
+    {
+      title: "Low-Water Garden Solutions for Dry Climates",
+      slug: "low-water-garden-solutions",
+      category: "Herb, Organic",
+      createdAt: "2024-07-13T10:00:00Z",
+      image: { url: "/images/blog/low-water-garden-solutions.png" },
+      excerpt: "Explore stunning xeriscaping ideas and drought-tolerant plant selections that save water without sacrificing style."
+    },
+    {
+      title: "Green Gardening Practices for a Better Planet",
+      slug: "green-gardening-practices",
+      category: "Landscaping, Organic",
+      createdAt: "2024-07-13T10:00:00Z",
+      image: { url: "/images/blog/green-gardening-practices.png" },
+      excerpt: "How your garden can contribute to a healthier planet through biodiversity and sustainable maintenance routines."
+    },
+    {
+      title: "Maximizing Small Spaces for Big Garden Yields",
+      slug: "maximizing-small-spaces",
+      category: "Seasonal, Vegetable",
+      createdAt: "2024-07-13T10:00:00Z",
+      image: { url: "/images/blog/maximizing-small-spaces.png" },
+      excerpt: "Vertical gardening and clever layout tips to help you grow a bountiful garden even on a small patio or balcony."
+    },
+    {
+      title: "Best Organic Methods to Protect Your Garden",
+      slug: "best-organic-methods",
+      category: "Flower, Indoor",
+      createdAt: "2024-07-13T10:00:00Z",
+      image: { url: "/images/blog/best-organic-methods.png" },
+      excerpt: "Protect your plants from pests and diseases using 100% natural and organic solutions that are safe for your family."
+    }
+  ] as Post[]
+}
 
 const primary = client.primaryColor || '#2d5a3d'
 ---
 
 <Layout title="Blog" description={`Tips and news from ${client.name}.`}>
 
-  <section style={`padding:4rem 1.5rem;background:${primary}12;text-align:center`}>
-    <div style="max-width:1200px;margin:0 auto">
-      <h1 style="font-size:2.5rem;font-weight:800;margin-bottom:1rem">Blog & Tips</h1>
-      <p style="color:#6b7280;font-size:1.05rem">Expert advice and news from {client.name}.</p>
-    </div>
-  </section>
+  <PageHero 
+    title="Blog Grid" 
+    image="https://images.unsplash.com/photo-1416339442236-8ceb164046f8?auto=format&fit=crop&q=80&w=2000"
+    breadcrumb="Blog Grid"
+  />
 
-  <section style="padding:4rem 1.5rem">
-    <div style="max-width:1200px;margin:0 auto">
+  <section style="padding: 6rem 1.5rem; background: #fff">
+    <div style="max-width: 1400px; margin: 0 auto">
       {posts.length > 0 ? (
-        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem">
-          {posts.map((post: any) => (
-            <a href={`/blog/${post.slug}`} style="display:block;border-radius:12px;border:1px solid #e5e7eb;overflow:hidden;text-decoration:none;color:#111">
-              {post.image?.url && (
-                <div style="aspect-ratio:16/9;overflow:hidden;background:#f3f4f6">
-                  <img src={post.image.url} alt={post.title} style="width:100%;height:100%;object-fit:cover" />
+        <div class="blog-grid">
+          {posts.map((post: any) => {
+            const date = post.createdAt 
+              ? new Date(post.createdAt).toLocaleDateString('en-US', { 
+                  month: 'short', 
+                  day: 'numeric', 
+                  year: 'numeric' 
+                }) 
+              : '';
+            const categories = post.category || 'Gardening, Tips';
+            
+            return (
+              <a href={`/blog/${post.slug}`} class="blog-card">
+                <div class="blog-card-inner">
+                  {post.image?.url && (
+                    <div class="image-container">
+                      <img src={post.image.url} alt={post.title} />
+                    </div>
+                  )}
+                  
+                  <div class="content">
+                    <div class="meta">
+                      <span class="category">{categories}</span>
+                      <span class="dot">•</span>
+                      <span class="date">{date}</span>
+                    </div>
+                    
+                    <h3 class="title">{post.title}</h3>
+                  </div>
                 </div>
-              )}
-              <div style="padding:1.25rem">
-                <p style="font-size:0.8rem;color:#9ca3af;margin-bottom:0.5rem">
-                  {post.createdAt ? new Date(post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : ''}
-                </p>
-                <h2 style="font-size:1.05rem;font-weight:700;margin-bottom:0.5rem;line-height:1.4">{post.title}</h2>
-                {post.excerpt && <p style="color:#6b7280;font-size:0.875rem;line-height:1.5">{post.excerpt}</p>}
-                <p style={`color:${primary};font-size:0.875rem;font-weight:600;margin-top:0.75rem`}>Read more →</p>
-              </div>
-            </a>
-          ))}
+              </a>
+            );
+          })}
         </div>
       ) : (
         <div style="text-align:center;padding:4rem;color:#6b7280">
@@ -52,4 +131,123 @@ const primary = client.primaryColor || '#2d5a3d'
     </div>
   </section>
 
+  <style define:vars={{ primary }}>
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+    }
+
+    .blog-card {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      height: 100%;
+      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .blog-card-inner {
+      background: #fcfaf5;
+      padding: 24px;
+      border-radius: 24px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s ease;
+    }
+
+    .image-container {
+      width: 100%;
+      aspect-ratio: 1.4 / 1;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .content {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+      font-size: 0.85rem;
+      color: #6b7280;
+      font-weight: 500;
+    }
+
+    .category {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .dot {
+      opacity: 0.5;
+    }
+
+    .title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      line-height: 1.4;
+      color: #1a2e26;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      transition: color 0.3s ease;
+    }
+
+    /* Hover Effects */
+    .blog-card:hover {
+      transform: translateY(-8px);
+    }
+
+    .blog-card:hover .blog-card-inner {
+      box-shadow: 0 20px 40px rgba(45, 90, 61, 0.08);
+    }
+
+    .blog-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .blog-card:hover .title {
+      color: var(--primary);
+    }
+
+    @media (max-width: 1024px) {
+      .blog-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .blog-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .blog-card-inner {
+        padding: 16px;
+      }
+      
+      .title {
+        font-size: 1.15rem;
+      }
+    }
+  </style>
+
+  <ReadyToWork />
 </Layout>

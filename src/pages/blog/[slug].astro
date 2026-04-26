@@ -1,54 +1,327 @@
 ---
 import Layout from '../../layouts/Layout.astro'
 import { client } from '../../client.config.js'
+import PageHero from '../../components/PageHero.astro'
+
+interface Post {
+  title: string;
+  slug: string;
+  category?: string;
+  createdAt: string;
+  image: { url: string };
+  content?: string;
+  excerpt?: string;
+}
 
 export async function getStaticPaths() {
+  let posts: Post[] = []
   try {
     const res = await fetch(
       `${client.cmsUrl}/api/blog?where[tenant.slug][equals]=${client.tenantSlug}&limit=100`
     )
     const data = await res.json()
-    return (data.docs || []).map((post: any) => ({
-      params: { slug: post.slug },
-      props: { post },
-    }))
-  } catch {
-    return []
+    posts = data.docs || []
+  } catch {}
+
+  // Fallback to mock data if no posts are found
+  if (posts.length === 0) {
+    posts = [
+      {
+        title: "Sustainable Gardening Tips for Every Home",
+        slug: "sustainable-gardening-tips",
+        category: "Equipment, Flower",
+        createdAt: "2025-04-11T10:00:00Z",
+        image: { url: "/images/blog/sustainable-gardening-tips.png" },
+        content: "<p>Sustainable gardening is about more than just avoiding chemicals. It's about creating a closed-loop system where your garden feeds itself and the local ecosystem. Start by composting your kitchen scraps and using native plants that require less water.</p><p>By following these simple tips, you can transform your backyard into a thriving haven for birds, bees, and butterflies while reducing your environmental footprint.</p>"
+      },
+      {
+        title: "Organic Gardening Techniques for Beginners",
+        slug: "organic-gardening-techniques",
+        category: "Indoor, Organic",
+        createdAt: "2025-04-11T10:00:00Z",
+        image: { url: "/images/blog/organic-gardening-techniques.png" },
+        content: "<p>Organic gardening starts with the soil. Healthy soil means healthy plants. Use organic matter like compost and well-rotted manure to build up soil fertility over time.</p><p>Avoid synthetic fertilizers and pesticides, which can harm beneficial insects and soil microbes. Instead, focus on building a balanced ecosystem where natural predators keep pests in check.</p>"
+      },
+      {
+        title: "Low-Water Garden Solutions for Dry Climates",
+        slug: "low-water-garden-solutions",
+        category: "Herb, Organic",
+        createdAt: "2024-07-13T10:00:00Z",
+        image: { url: "/images/blog/low-water-garden-solutions.png" },
+        content: "<p>In dry climates, every drop of water counts. Xeroscaping doesn't mean just rocks and cactus; it means choosing plants that are adapted to your local rainfall levels.</p><p>Consider installing a drip irrigation system to deliver water directly to the roots, and use thick layers of mulch to prevent evaporation. Succulents and drought-tolerant perennials like lavender and sage can create a stunning, low-maintenance landscape.</p>"
+      },
+      {
+        title: "Green Gardening Practices for a Better Planet",
+        slug: "green-gardening-practices",
+        category: "Landscaping, Organic",
+        createdAt: "2024-07-13T10:00:00Z",
+        image: { url: "/images/blog/green-gardening-practices.png" },
+        content: "<p>Every garden can be a tool for environmental change. By reducing lawn areas and replacing them with diverse plantings, you increase biodiversity and carbon sequestration.</p><p>Learn about integrated pest management (IPM) and how to support pollinators throughout the seasons. Your garden is part of a larger network of green spaces that support life across your community.</p>"
+      },
+      {
+        title: "Maximizing Small Spaces for Big Garden Yields",
+        slug: "maximizing-small-spaces",
+        category: "Seasonal, Vegetable",
+        createdAt: "2024-07-13T10:00:00Z",
+        image: { url: "/images/blog/maximizing-small-spaces.png" },
+        content: "<p>You don't need an acre to grow a serious amount of food. Vertical gardening, container plantings, and intensive spacing techniques can help you get the most out of every square inch.</p><p>Try intercropping—planting fast-growing crops like radishes between slower ones like tomatoes—to double your harvest. With the right planning, even a balcony can provide a steady supply of fresh herbs and vegetables.</p>"
+      },
+      {
+        title: "Best Organic Methods to Protect Your Garden",
+        slug: "best-organic-methods",
+        category: "Flower, Indoor",
+        createdAt: "2024-07-13T10:00:00Z",
+        image: { url: "/images/blog/best-organic-methods.png" },
+        content: "<p>Protecting your garden naturally involves a combination of prevention and targeted intervention. Row covers, companion planting, and homemade sprays can all play a role.</p><p>Focus on plant health first; a strong, well-watered plant is much more resistant to attack. If you do see pests, identify them first before taking action—many bugs in your garden are actually helping you!</p>"
+      }
+    ]
   }
+
+  return posts.map((post: any) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }))
 }
 
-const { post } = Astro.props
+const { post } = Astro.props as { post: Post }
 const primary = client.primaryColor || '#2d5a3d'
+
+// Fetch recent posts for sidebar
+let recentPosts: Post[] = []
+try {
+  const res = await fetch(`${client.cmsUrl}/api/blog?where[tenant.slug][equals]=${client.tenantSlug}&limit=3&sort=-createdAt`)
+  recentPosts = (await res.json()).docs || []
+} catch {}
+
+if (recentPosts.length === 0) {
+  recentPosts = [
+    {
+      title: "Sustainable Gardening Tips for Every Home",
+      slug: "sustainable-gardening-tips",
+      category: "Equipment, Flower",
+      createdAt: "2025-04-11T10:00:00Z",
+      image: { url: "/images/blog/sustainable-gardening-tips.png" }
+    },
+    {
+      title: "Organic Gardening Techniques for Beginners",
+      slug: "organic-gardening-techniques",
+      category: "Indoor, Organic",
+      createdAt: "2025-04-11T10:00:00Z",
+      image: { url: "/images/blog/organic-gardening-techniques.png" }
+    },
+    {
+      title: "Low-Water Garden Solutions for Dry Climates",
+      slug: "low-water-garden-solutions",
+      category: "Herb, Organic",
+      createdAt: "2024-07-13T10:00:00Z",
+      image: { url: "/images/blog/low-water-garden-solutions.png" }
+    },
+    {
+      title: "Green Gardening Practices for a Better Planet",
+      slug: "green-gardening-practices",
+      category: "Landscaping, Organic",
+      createdAt: "2024-07-13T10:00:00Z",
+      image: { url: "/images/blog/green-gardening-practices.png" }
+    },
+    {
+      title: "Maximizing Small Spaces for Big Garden Yields",
+      slug: "maximizing-small-spaces",
+      category: "Seasonal, Vegetable",
+      createdAt: "2024-07-13T10:00:00Z",
+      image: { url: "/images/blog/maximizing-small-spaces.png" }
+    },
+    {
+      title: "Best Organic Methods to Protect Your Garden",
+      slug: "best-organic-methods",
+      category: "Flower, Indoor",
+      createdAt: "2024-07-13T10:00:00Z",
+      image: { url: "/images/blog/best-organic-methods.png" }
+    }
+  ]
+}
+
+const categories = [
+  { name: 'Garden Care', count: 12 },
+  { name: 'Landscaping', count: 8 },
+  { name: 'Irrigation', count: 5 },
+  { name: 'Outdoor Living', count: 7 },
+  { name: 'Sustainable Tips', count: 4 }
+]
+
+const tags = ['Landscaping', 'Garden', 'Greenery', 'Irrigation', 'Mulching', 'Lawn Care', 'Sustainability', 'Design']
 ---
 
 <Layout title={post?.title || 'Blog Post'}>
+  <PageHero 
+    title={post?.title || 'Blog Post'} 
+    image={post?.image?.url || '/images/blog/sustainable-gardening-tips.png'}
+    breadcrumb="Blog"
+  />
 
-  <section style={`padding:4rem 1.5rem;background:${primary}12`}>
-    <div style="max-width:800px;margin:0 auto">
-      <a href="/blog" style={`color:${primary};font-size:0.9rem;font-weight:500`}>← Back to Blog</a>
-      <h1 style="font-size:2.25rem;font-weight:800;margin:1rem 0 0.5rem;line-height:1.25">{post?.title || 'Blog Post'}</h1>
-      {post?.createdAt && (
-        <p style="color:#6b7280;font-size:0.875rem">
-          {new Date(post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-        </p>
-      )}
-    </div>
-  </section>
-
-  <section style="padding:3rem 1.5rem">
-    <div style="max-width:800px;margin:0 auto">
-      {post?.image?.url && (
-        <div style="border-radius:12px;overflow:hidden;margin-bottom:2rem;aspect-ratio:16/9">
-          <img src={post.image.url} alt={post.title} style="width:100%;height:100%;object-fit:cover" />
+  <section style="padding: 4rem 1.5rem; background: #fff">
+    <div style="max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 350px; gap: 4rem">
+      
+      <!-- Main Content -->
+      <div style="min-width: 0">
+        <!-- Post Meta -->
+        <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; color: #6b7280; font-size: 0.9rem">
+          <div style="display: flex; align-items: center; gap: 0.5rem">
+            <div style={`width: 40px; height: 40px; border-radius: 50%; background: ${primary}22; display: flex; align-items: center; justify-content: center; color: ${primary}; font-weight: 700`}>
+              G
+            </div>
+            <div>
+              <p style="color: #111; font-weight: 600; margin: 0">Written by</p>
+              <p style="margin: 0">Green Valley Team</p>
+            </div>
+          </div>
+          <div style="width: 1px; height: 30px; background: #e5e7eb"></div>
+          <div>
+            <p style="color: #111; font-weight: 600; margin: 0">Published on</p>
+            <p style="margin: 0">{new Date(post.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+          </div>
         </div>
-      )}
-      <div style="font-size:1.05rem;line-height:1.8;color:#374151" set:html={post?.content || '<p>Content coming soon.</p>'} />
-      <div style={`margin-top:3rem;padding:1.5rem;border-radius:12px;background:${primary}12`}>
-        <h3 style="font-weight:700;margin-bottom:0.5rem">Ready to get started?</h3>
-        <p style="color:#4b5563;margin-bottom:1rem">Contact {client.name} for a free, no-obligation estimate.</p>
-        <a href="/contact" style={`background:${primary};color:#fff;padding:0.6rem 1.5rem;border-radius:8px;font-weight:600`}>Get Free Quote</a>
+
+        <!-- Featured Image -->
+        {post?.image?.url && (
+          <div style="border-radius: 24px; overflow: hidden; margin-bottom: 3rem; box-shadow: 0 20px 40px rgba(0,0,0,0.05)">
+            <img src={post.image.url} alt={post.title} style="width: 100%; height: auto; display: block" />
+          </div>
+        )}
+
+        <!-- Post Body -->
+        <article class="blog-content" style="font-size: 1.15rem; line-height: 1.8; color: #374151">
+          <div set:html={post?.content || '<p>Content coming soon.</p>'} />
+        </article>
+
+        <!-- Quote Block Example (if not in content, we can show how it looks) -->
+        <div style={`margin: 4rem 0; padding: 3rem; background: ${primary}08; border-radius: 24px; position: relative; overflow: hidden`}>
+          <div style={`position: absolute; top: 20px; left: 20px; font-size: 8rem; color: ${primary}; opacity: 0.1; line-height: 1; font-family: serif`}>“</div>
+          <blockquote style="position: relative; z-index: 2; margin: 0; font-size: 1.5rem; font-weight: 600; color: #1a2e26; font-style: italic; line-height: 1.6">
+            Landscaping is not just about moving dirt and planting trees; it's about creating an outdoor sanctuary that breathes life into your home and reflects your unique lifestyle.
+          </blockquote>
+          <p style={`margin: 1.5rem 0 0; color: ${primary}; font-weight: 700; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px`}>— Design Principle</p>
+        </div>
+
+        <!-- Image Grid Example -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 3rem 0">
+          <img src="/images/blog/sustainable-gardening-tips.png" style="width: 100%; height: 300px; object-fit: cover; border-radius: 16px" alt="Garden 1" />
+          <img src="/images/blog/organic-gardening-techniques.png" style="width: 100%; height: 300px; object-fit: cover; border-radius: 16px" alt="Garden 2" />
+        </div>
+
+        <!-- Author Box -->
+        <div style="margin-top: 5rem; padding: 3rem; background: #f9fafb; border-radius: 24px; display: flex; gap: 2rem; align-items: center">
+          <div style={`width: 100px; height: 100px; border-radius: 50%; background: ${primary}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: #fff; font-size: 2rem; font-weight: 800`}>
+            GV
+          </div>
+          <div>
+            <h3 style="font-size: 1.5rem; font-weight: 800; margin-bottom: 0.5rem">Green Valley Landscaping</h3>
+            <p style="color: #6b7280; line-height: 1.6; margin: 0">Our team of expert horticulturists and designers are passionate about bringing beautiful, sustainable outdoor spaces to life. With years of experience in Irvine, we share our best tips and insights here.</p>
+          </div>
+        </div>
+
+        <!-- Comment Section -->
+        <div style="margin-top: 5rem">
+          <h3 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 2rem">Leave A Comment</h3>
+          <form style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem">
+            <input type="text" placeholder="Your Name *" required style="padding: 1rem 1.5rem; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem" />
+            <input type="email" placeholder="Email Address *" required style="padding: 1rem 1.5rem; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem" />
+            <input type="text" placeholder="Website" style="grid-column: span 2; padding: 1rem 1.5rem; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem" />
+            <textarea placeholder="Your Comment *" required rows="6" style="grid-column: span 2; padding: 1rem 1.5rem; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 1rem; resize: vertical"></textarea>
+            <button type="submit" style={`grid-column: span 2; background: #1a2e26; color: #fff; padding: 1.25rem; border-radius: 12px; font-weight: 700; border: none; cursor: pointer; transition: 0.3s`} onmouseover="this.style.background='#2d5a3d'" onmouseout="this.style.background='#1a2e26'">Post Comment</button>
+          </form>
+        </div>
       </div>
+
+      <!-- Sidebar -->
+      <aside>
+        <!-- Search -->
+        <div style="margin-bottom: 3rem">
+          <div style="position: relative">
+            <input type="text" placeholder="Search..." style="width: 100%; padding: 1rem 1.5rem; border: 1px solid #e5e7eb; border-radius: 12px; font-size: 0.95rem" />
+            <button style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div style="margin-bottom: 3rem">
+          <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid #e5e7eb">Categories</h3>
+          <div style="display: flex; flex-direction: column; gap: 0.75rem">
+            {categories.map(cat => (
+              <div style="display: flex; justify-content: space-between; align-items: center; color: #4b5563; font-weight: 500">
+                <span>{cat.name}</span>
+                <span style={`background: ${primary}12; color: ${primary}; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.8rem`}>{cat.count}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Recent Posts -->
+        <div style="margin-bottom: 3rem">
+          <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid #e5e7eb">Recent Posts</h3>
+          <div style="display: flex; flex-direction: column; gap: 1.5rem">
+            {recentPosts.map((rp: Post) => (
+              <a href={`/blog/${rp.slug}`} style="display: flex; gap: 1rem; text-decoration: none; color: inherit; group">
+                <img src={rp.image?.url || '/images/blog/sustainable-gardening-tips.png'} style="width: 70px; height: 70px; border-radius: 12px; object-fit: cover" alt={rp.title} />
+                <div>
+                  <h4 style="font-size: 0.95rem; font-weight: 700; margin: 0 0 0.25rem; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden">{rp.title}</h4>
+                  <p style="font-size: 0.8rem; color: #9ca3af; margin: 0">{new Date(rp.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <!-- Contact Details -->
+        <div style={`margin-bottom: 3rem; padding: 2rem; background: ${primary}08; border-radius: 24px`}>
+          <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem">Contact Details</h3>
+          <div style="display: flex; flex-direction: column; gap: 1rem; font-size: 0.9rem">
+            <div style="display: flex; gap: 0.75rem; color: #4b5563">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={primary} stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <span>{client.email}</span>
+            </div>
+            <div style="display: flex; gap: 0.75rem; color: #4b5563">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={primary} stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <span>{client.phone}</span>
+            </div>
+            <div style="display: flex; gap: 0.75rem; color: #4b5563">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={primary} stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>{client.address}, {client.city}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tags -->
+        <div style="margin-bottom: 3rem">
+          <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; padding-bottom: 0.75rem; border-bottom: 2px solid #e5e7eb">Tags</h3>
+          <div style="display: flex; flex-wrap: wrap; gap: 0.5rem">
+            {tags.map(tag => (
+              <span style="padding: 0.4rem 0.8rem; background: #f3f4f6; border-radius: 8px; font-size: 0.85rem; font-weight: 600; color: #4b5563; cursor: pointer; transition: 0.3s" onmouseover="this.style.background='#1a2e26'; this.style.color='#fff'" onmouseout="this.style.background='#f3f4f6'; this.style.color='#4b5563'">{tag}</span>
+            ))}
+          </div>
+        </div>
+
+        <!-- Newsletter -->
+        <div style={`padding: 2.5rem; background: #1a2e26; border-radius: 24px; color: #fff`}>
+          <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem">Newsletter</h3>
+          <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 1.5rem">Get the latest gardening tips and news delivered to your inbox.</p>
+          <div style="position: relative">
+            <input type="email" placeholder="Enter your email" style="width: 100%; padding: 0.8rem 1rem; border-radius: 10px; border: none; font-size: 0.9rem" />
+            <button style={`position: absolute; right: 5px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; border-radius: 8px; background: ${primary}; border: none; display: flex; align-items: center; justify-content: center; cursor: pointer`}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+            </button>
+          </div>
+        </div>
+      </aside>
     </div>
   </section>
 
+  <style is:global>
+    .blog-content p { margin-bottom: 1.5rem; }
+    .blog-content h2 { font-size: 1.8rem; font-weight: 800; color: #1a2e26; margin: 2.5rem 0 1rem; }
+    .blog-content h3 { font-size: 1.4rem; font-weight: 700; color: #1a2e26; margin: 2rem 0 1rem; }
+    .blog-content ul { margin-bottom: 1.5rem; padding-left: 1.5rem; }
+    .blog-content li { margin-bottom: 0.5rem; }
+  </style>
 </Layout>

@@ -1,17 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import { client } from '../client.config.js'
+import PageHero from '../components/PageHero.astro'
+import ReadyToWork from '../components/ReadyToWork.astro'
 const primary = client.primaryColor || '#2d5a3d'
 ---
 
 <Layout title="Contact Us" description={`Contact ${client.name} for a free estimate. Serving ${client.city}, ${client.state}.`}>
 
-  <section style={`padding:4rem 1.5rem;background:${primary}12;text-align:center`}>
-    <div style="max-width:1200px;margin:0 auto">
-      <h1 style="font-size:2.5rem;font-weight:800;margin-bottom:1rem">Contact Us</h1>
-      <p style="color:#6b7280;font-size:1.05rem">Get your free estimate today. We respond within 24 hours.</p>
-    </div>
-  </section>
+  <PageHero 
+    title="Contact Us" 
+    image="https://images.unsplash.com/photo-1557429287-b2e26467fc2b?auto=format&fit=crop&q=80&w=2000"
+  />
 
   <section style="padding:4rem 1.5rem">
     <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3rem">
@@ -105,6 +105,7 @@ const primary = client.primaryColor || '#2d5a3d'
     </div>
   </section>
 
+  <ReadyToWork />
 </Layout>
 
 <script>

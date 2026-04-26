@@ -56,69 +56,182 @@ const primary = client.primaryColor || '#2d5a3d'
 </head>
 <body style="min-height:100vh; display:flex; flex-direction:column">
 
-  <header style="position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #e5e7eb;box-shadow:0 1px 4px rgba(0,0,0,0.05)">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;height:64px;padding:0 1.5rem">
-      <a href="/" style={`color:${primary};font-weight:800;font-size:1.15rem`}>{client.name}</a>
-      <nav class="desktop-only" style="display:flex;gap:1.75rem;align-items:center">
-        <a href="/" class={`nav-link${currentPath==='/'?' active':''}`}>Home</a>
-        <a href="/services" class={`nav-link${currentPath==='/services'?' active':''}`}>Services</a>
-        <a href="/about" class={`nav-link${currentPath==='/about'?' active':''}`}>About</a>
-        <a href="/gallery" class={`nav-link${currentPath==='/gallery'?' active':''}`}>Gallery</a>
-        <a href="/testimonials" class={`nav-link${currentPath==='/testimonials'?' active':''}`}>Reviews</a>
-        <a href="/blog" class={`nav-link${currentPath==='/blog'?' active':''}`}>Blog</a>
-        <a href="/contact" class={`nav-link${currentPath==='/contact'?' active':''}`}>Contact</a>
-        <a href="/contact" class="btn-primary">Get Free Quote</a>
-      </nav>
-      <button id="menu-btn" class="mobile-only" style="background:none;border:none;cursor:pointer;padding:0.5rem">
-        <svg width="24" height="24" fill="none" stroke="#374151" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
-      </button>
+  <header style="position:sticky;top:0;z-index:100;width:100%">
+    <!-- Top Bar -->
+    <div style={`background:${primary};color:#fff;padding:0.5rem 1.5rem;font-size:0.8rem`}>
+      <div class="container" style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:1.5rem;align-items:center">
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z"/></svg>
+            {client.phone}
+          </div>
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.11,4 20,4M20,18H4V8L12,13L20,8V18M12,11L4,6H20L12,11Z"/></svg>
+            {client.email}
+          </div>
+        </div>
+        <div class="desktop-only" style="display:flex;gap:1.5rem;align-items:center">
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M16.2,16.2L11,13V7H12.5V12.2L17,14.9L16.2,16.2Z"/></svg>
+            Mon - Fri: 9:00 - 19:00
+          </div>
+          <div style="display:flex;gap:1rem">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22.46,6C21.69,6.35 20.86,6.58 20,6.69C20.88,6.16 21.56,5.32 21.88,4.31C21.05,4.81 20.13,5.16 19.16,5.36C18.37,4.5 17.26,4 16,4C13.65,4 11.73,5.92 11.73,8.29C11.73,8.63 11.77,8.96 11.84,9.27C8.28,9.09 5.11,7.38 3,4.79C2.63,5.42 2.42,6.16 2.42,6.94C2.42,8.43 3.17,9.75 4.33,10.5C3.62,10.5 2.96,10.3 2.38,10C2.38,10 2.38,10 2.38,10.03C2.38,12.11 3.86,13.85 5.82,14.24C5.46,14.34 5.08,14.39 4.69,14.39C4.42,14.39 4.15,14.36 3.89,14.31C4.43,16 6,17.26 7.89,17.29C6.43,18.45 4.58,19.13 2.56,19.13C2.22,19.13 1.88,19.11 1.54,19.07C3.44,20.29 5.7,21 8.12,21C16,21 20.33,14.46 20.33,8.79C20.33,8.6 20.33,8.41 20.32,8.23C21.16,7.63 21.88,6.87 22.46,6Z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,7C10,7 8.33,8.67 8.33,10.67C8.33,12.67 10,14.33 12,14.33C14,14.33 15.67,12.67 15.67,10.67C15.67,8.67 14,7 12,7M12,13C10.71,13 9.67,11.96 9.67,10.67C9.67,9.37 10.71,8.33 12,8.33C13.29,8.33 14.33,9.37 14.33,10.67C14.33,11.96 13.29,13 12,13M12,15.33C10,15.33 8,16 6.67,17.33C6.67,17.33 6.67,17.33 6.67,17.33C8,19 10,20 12,20C14,20 16,19 17.33,17.33C17.33,17.33 17.33,17.33 17.33,17.33C16,16 14,15.33 12,15.33M12,16.67C13.29,16.67 14.5,17 15.5,17.67C14.5,18.33 13.29,18.67 12,18.67C10.71,18.67 9.5,18.33 8.5,17.67C9.5,17 10.71,16.67 12,16.67Z"/></svg>
+          </div>
+        </div>
+      </div>
     </div>
-    <div id="mobile-nav" style="display:none;flex-direction:column;padding:1rem 1.5rem;gap:0.5rem;border-top:1px solid #f3f4f6">
-      <a href="/" style="padding:0.5rem 0;color:#374151;font-weight:500;border-bottom:1px solid #f9fafb">Home</a>
-      <a href="/services" style="padding:0.5rem 0;color:#374151;font-weight:500;border-bottom:1px solid #f9fafb">Services</a>
-      <a href="/about" style="padding:0.5rem 0;color:#374151;font-weight:500;border-bottom:1px solid #f9fafb">About</a>
-      <a href="/gallery" style="padding:0.5rem 0;color:#374151;font-weight:500;border-bottom:1px solid #f9fafb">Gallery</a>
-      <a href="/testimonials" style="padding:0.5rem 0;color:#374151;font-weight:500;border-bottom:1px solid #f9fafb">Reviews</a>
-      <a href="/blog" style="padding:0.5rem 0;color:#374151;font-weight:500;border-bottom:1px solid #f9fafb">Blog</a>
-      <a href="/contact" style="padding:0.5rem 0;color:#374151;font-weight:500;border-bottom:1px solid #f9fafb">Contact</a>
-      <a href="/contact" class="btn-primary" style="margin-top:0.5rem;text-align:center">Get Free Quote</a>
+
+    <!-- Main Navigation -->
+    <div style="background:#fff;position:relative;box-shadow:0 4px 20px rgba(0,0,0,0.08)">
+      <div class="container" style="display:flex;align-items:center;justify-content:space-between;height:80px;padding:0 1.5rem">
+        
+        <!-- Slanted Logo Container -->
+        <div style="position:absolute;left:0;top:0;height:100%;background:#1a2e21;padding:0 4rem 0 2rem;display:flex;align-items:center;clip-path:polygon(0 0, 100% 0, 80% 100%, 0% 100%);z-index:10;box-shadow:5px 0 15px rgba(0,0,0,0.2)">
+          <a href="/">
+            <img src="/logo.png" alt={client.name} style="height:48px;filter:invert(1);mix-blend-mode:lighten" />
+          </a>
+        </div>
+
+        <div style="width:200px" class="desktop-only"></div> <!-- Spacer for absolute logo -->
+
+        <nav class="desktop-only" style="display:flex;gap:1.5rem;align-items:center;flex:1;justify-content:center">
+          <a href="/" class={`nav-link${currentPath==='/'?' active':''}`}>Home</a>
+          <a href="/about" class={`nav-link${currentPath==='/about'?' active':''}`}>About</a>
+          <a href="/services" class={`nav-link${currentPath==='/services'?' active':''}`}>Services</a>
+          <a href="/gallery" class={`nav-link${currentPath==='/gallery'?' active':''}`}>Projects</a>
+          <a href="/testimonials" class={`nav-link${currentPath==='/testimonials'?' active':''}`}>Reviews</a>
+          <a href="/blog" class={`nav-link${currentPath==='/blog'?' active':''}`}>Blog</a>
+          <a href="/contact" class={`nav-link${currentPath==='/contact'?' active':''}`}>Contact</a>
+        </nav>
+
+        <div style="display:flex;align-items:center;gap:1rem">
+          <a href="/contact" class="btn-primary desktop-only" style="background:#e8f5e9;color:#2e7d32;border:none">Get Free Quote</a>
+          <div style="display:flex;gap:0.75rem;align-items:center;border-left:1px solid #eee;padding-left:1rem">
+            <button style="background:none;border:none;cursor:pointer;color:#333">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            </button>
+            <button style="background:none;border:none;cursor:pointer;color:#333">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+            </button>
+            <button id="menu-btn" class="mobile-only" style="background:none;border:none;cursor:pointer">
+              <svg width="24" height="24" fill="none" stroke="#333" viewBox="0 0 24 24" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Mobile Nav -->
+      <div id="mobile-nav" style="display:none;flex-direction:column;padding:1rem 1.5rem;gap:0.5rem;background:#fff;border-top:1px solid #eee">
+        <a href="/" style="padding:0.5rem 0;color:#333;font-weight:500">Home</a>
+        <a href="/about" style="padding:0.5rem 0;color:#333;font-weight:500">About</a>
+        <a href="/services" style="padding:0.5rem 0;color:#333;font-weight:500">Services</a>
+        <a href="/gallery" style="padding:0.5rem 0;color:#333;font-weight:500">Projects</a>
+        <a href="/contact" class="btn-primary" style="margin-top:0.5rem;text-align:center">Get Free Quote</a>
+      </div>
     </div>
   </header>
 
   <main style="flex:1"><slot /></main>
 
-  <footer style="background:#111827;color:#d1d5db;margin-top:4rem">
-    <div class="container" style="padding:3rem 1.5rem">
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem;margin-bottom:2rem">
+  <footer style="background:#1a2e26; color:#fff; position:relative; padding:6rem 0 3rem; overflow:hidden">
+    <!-- Large Background Watermark -->
+    <div style="position:absolute; bottom:20px; left:50%; transform:translateX(-50%); font-size:clamp(5rem, 15vw, 12rem); font-weight:900; color:rgba(255,255,255,0.03); letter-spacing:10px; pointer-events:none; text-transform:uppercase; white-space:nowrap; width:100%; text-align:center">
+      {client.name.replace(/\s+/g, '')}
+    </div>
+
+    <div class="container" style="position:relative; z-index:2; padding:0 1.5rem">
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:3rem; margin-bottom:4rem">
+        <!-- Logo & About -->
         <div>
-          <h3 style="color:#fff;font-weight:700;margin-bottom:0.75rem">{client.name}</h3>
-          <p style="font-size:0.875rem;color:#9ca3af;margin-bottom:0.5rem">{client.tagline}</p>
-          {client.address && <p style="font-size:0.875rem">{client.address}, {client.city}, {client.state}</p>}
+          <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:1.5rem">
+            <div style="width:40px; height:40px; background:#e0a526; border-radius:10px 0 10px 0; display:flex; align-items:center; justify-content:center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <span style="font-size:1.75rem; font-weight:800; letter-spacing:-1px">{client.name.split(' ')[0]}<span style="color:#e0a526">{client.name.split(' ')[1] || ''}</span></span>
+          </div>
+          <p style="color:rgba(255,255,255,0.7); font-size:0.95rem; line-height:1.7; margin-bottom:2rem; max-width:300px">
+            {client.tagline}. Professional landscaping and garden maintenance services tailored to your lifestyle.
+          </p>
+          <div style="display:flex; gap:0.75rem">
+            {[
+              { icon: '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>', link: '#' },
+              { icon: '<path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/>', link: '#' },
+              { icon: '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>', link: '#' },
+              { icon: '<circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/>', link: '#' }
+            ].map(social => (
+              <a href={social.link} style="width:40px; height:40px; background:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#1a2e26; transition:0.3s" onmouseover="this.style.background='#e0a526'; this.style.color='#fff'" onmouseout="this.style.background='#fff'; this.style.color='#1a2e26'">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" set:html={social.icon}></svg>
+              </a>
+            ))}
+          </div>
         </div>
+
+        <!-- Useful Links -->
         <div>
-          <h4 style="color:#fff;font-weight:600;margin-bottom:0.75rem">Services</h4>
-          {client.services.slice(0,5).map((s:string) => (
-            <a href="/services" style="display:block;color:#9ca3af;font-size:0.875rem;margin-bottom:0.35rem">{s}</a>
-          ))}
+          <h4 style="font-size:1.25rem; font-weight:700; margin-bottom:2rem; position:relative; display:inline-block">
+            Useful Links
+            <span style="position:absolute; bottom:-8px; left:0; width:30px; height:2px; background:#e0a526"></span>
+          </h4>
+          <div style="display:flex; flex-direction:column; gap:0.85rem">
+            <a href="/" style="color:rgba(255,255,255,0.7); font-size:0.95rem; transition:0.3s" onmouseover="this.style.color='#e0a526'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">Home</a>
+            <a href="/about" style="color:rgba(255,255,255,0.7); font-size:0.95rem; transition:0.3s" onmouseover="this.style.color='#e0a526'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">About Us</a>
+            <a href="/services" style="color:rgba(255,255,255,0.7); font-size:0.95rem; transition:0.3s" onmouseover="this.style.color='#e0a526'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">Services</a>
+            <a href="/gallery" style="color:rgba(255,255,255,0.7); font-size:0.95rem; transition:0.3s" onmouseover="this.style.color='#e0a526'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">Our Projects</a>
+            <a href="/contact" style="color:rgba(255,255,255,0.7); font-size:0.95rem; transition:0.3s" onmouseover="this.style.color='#e0a526'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">Contact Us</a>
+          </div>
         </div>
+
+        <!-- Address -->
         <div>
-          <h4 style="color:#fff;font-weight:600;margin-bottom:0.75rem">Contact</h4>
-          {client.phone && <a href={`tel:${client.phone}`} style="display:block;color:#9ca3af;font-size:0.875rem;margin-bottom:0.35rem">{client.phone}</a>}
-          {client.email && <a href={`mailto:${client.email}`} style="display:block;color:#9ca3af;font-size:0.875rem;margin-bottom:0.75rem">{client.email}</a>}
-          <a href="/contact" class="btn-primary" style="font-size:0.875rem">Get Free Quote</a>
+          <h4 style="font-size:1.25rem; font-weight:700; margin-bottom:2rem; position:relative; display:inline-block">
+            Address
+            <span style="position:absolute; bottom:-8px; left:0; width:30px; height:2px; background:#e0a526"></span>
+          </h4>
+          <div style="display:flex; flex-direction:column; gap:1.25rem">
+            <div style="display:flex; align-items:center; gap:1rem">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e0a526" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+              <a href={`mailto:${client.email}`} style="color:rgba(255,255,255,0.7); font-size:0.95rem; transition:0.3s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">{client.email}</a>
+            </div>
+            <div style="display:flex; align-items:center; gap:1rem">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e0a526" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              <a href={`tel:${client.phone}`} style="color:rgba(255,255,255,0.7); font-size:0.95rem; transition:0.3s" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">{client.phone}</a>
+            </div>
+            <div style="display:flex; align-items:flex-start; gap:1rem">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e0a526" stroke-width="2" style="margin-top:0.25rem"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span style="color:rgba(255,255,255,0.7); font-size:0.95rem; line-height:1.5">{client.address}<br/>{client.city}, {client.state}</span>
+            </div>
+          </div>
         </div>
+
+        <!-- Subscribe -->
         <div>
-          <h4 style="color:#fff;font-weight:600;margin-bottom:0.75rem">Service Areas</h4>
-          {client.serviceArea?.slice(0,5).map((a:string) => (
-            <p style="color:#9ca3af;font-size:0.875rem;margin-bottom:0.25rem">{a}</p>
-          ))}
+          <h4 style="font-size:1.25rem; font-weight:700; margin-bottom:2rem; position:relative; display:inline-block">
+            Subscribe
+            <span style="position:absolute; bottom:-8px; left:0; width:30px; height:2px; background:#e0a526"></span>
+          </h4>
+          <p style="color:rgba(255,255,255,0.7); font-size:0.95rem; margin-bottom:1.5rem">Subscribe to our newsletter for latest updates and gardening tips.</p>
+          <div style="display:flex; flex-direction:column; gap:0.75rem">
+            <input type="email" placeholder="Enter your email" style="width:100%; padding:1rem 1.25rem; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); border-radius:10px; color:#fff; font-size:0.95rem; outline:none" />
+            <button style="width:100%; padding:1rem; background:#e0a526; color:#fff; border:none; border-radius:10px; font-weight:700; cursor:pointer; transition:0.3s" onmouseover="this.style.background='#c99420'" onmouseout="this.style.background='#e0a526'">
+              Subscribe Now
+            </button>
+          </div>
         </div>
       </div>
-      <div style="border-top:1px solid #1f2937;padding-top:1.5rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.5rem;font-size:0.75rem;color:#6b7280">
-        <p>© {new Date().getFullYear()} {client.name}. All rights reserved.</p>
-        <p>Licensed & Insured | {client.city}, {client.state}</p>
+
+      <!-- Bottom Bar -->
+      <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:2rem; text-align:center; font-size:0.9rem; color:rgba(255,255,255,0.5)">
+        <p>© {new Date().getFullYear()} {client.name}. All Rights Reserved. Designed for premium landscaping excellence.</p>
       </div>
     </div>
+
+    <!-- Back to Top Button -->
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="position:absolute; bottom:3rem; right:3rem; width:50px; height:50px; background:#e0a526; border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; cursor:pointer; transition:0.3s; z-index:10; box-shadow:0 4px 15px rgba(0,0,0,0.3)" onmouseover="this.style.transform='translateY(-5px)'" onmouseout="this.style.transform='translateY(0)'">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+    </button>
   </footer>
 
   <script>

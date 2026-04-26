@@ -1,79 +1,215 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import { client } from '../client.config.js'
+import ReadyToWork from '../components/ReadyToWork.astro'
+import PageHero from '../components/PageHero.astro'
 const primary = client.primaryColor || '#2d5a3d'
 ---
 
 <Layout title="About Us" description={`Learn about ${client.name} — trusted ${client.industry} professionals in ${client.city}, ${client.state}.`}>
 
-  <section style={`padding:4rem 1.5rem;background:${primary}12;text-align:center`}>
-    <div style="max-width:1200px;margin:0 auto">
-      <h1 style="font-size:2.5rem;font-weight:800;margin-bottom:1rem">About {client.name}</h1>
-      <p style="color:#6b7280;max-width:600px;margin:0 auto;font-size:1.05rem">
-        Trusted {client.industry} professionals proudly serving {client.city} and surrounding communities.
-      </p>
-    </div>
-  </section>
+  <PageHero 
+    title="About Us" 
+    image="https://images.unsplash.com/photo-1592150621344-c79214751004?auto=format&fit=crop&q=80&w=2000" 
+  />
 
-  <section style="padding:4rem 1.5rem">
-    <div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:3rem;align-items:center">
-      <div>
-        <h2 style="font-size:1.75rem;font-weight:700;margin-bottom:1.5rem">Who We Are</h2>
-        <p style="color:#4b5563;line-height:1.8;margin-bottom:1rem">
-          {client.name} is a locally owned and operated {client.industry} company serving {client.city}, {client.state} and the surrounding areas. We take pride in delivering high-quality work at fair prices.
-        </p>
-        <p style="color:#4b5563;line-height:1.8;margin-bottom:1rem">
-          Our team of licensed professionals brings years of hands-on experience to every project. Whether it's a small repair or a large installation, we treat every job with the same care and professionalism.
-        </p>
-        <p style="color:#4b5563;line-height:1.8;margin-bottom:2rem">
-          We are fully licensed and insured, giving our customers peace of mind on every job.
-        </p>
-        <div style="display:flex;gap:1rem;flex-wrap:wrap">
-          <a href="/contact" style={`background:${primary};color:#fff;padding:0.75rem 1.75rem;border-radius:10px;font-weight:600`}>Get Free Quote</a>
-          <a href={`tel:${client.phone}`} style={`border:2px solid ${primary};color:${primary};padding:0.75rem 1.75rem;border-radius:10px;font-weight:600`}>Call Us</a>
+  <!-- Premium Who We Are Section -->
+  <section style="padding: 6rem 1.5rem; background: #fff; position: relative; overflow: hidden">
+    <!-- Lawnmower Watermark -->
+    <div style="position: absolute; bottom: -20px; right: -20px; opacity: 0.03; pointer-events: none">
+      <svg width="300" height="300" viewBox="0 0 24 24" fill="none" stroke="#1a2e26" stroke-width="0.5"><path d="M7 11h14M7 15h14M3 5v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2zm16 11l-3-3m0 6l3-3"/></svg>
+    </div>
+
+    <div class="container" style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 5rem; align-items: center">
+      <!-- Left: Image with Badge -->
+      <div style="position: relative">
+        <div style="border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1)">
+          <img src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?auto=format&fit=crop&q=80&w=1200" alt="Gardening Passion" style="width: 100%; height: 600px; object-fit: cover" />
+        </div>
+        <!-- Experience Badge -->
+        <div style="position: absolute; top: 40px; right: -30px; width: 120px; height: 120px; background: #1a2e26; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; border: 4px solid #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 2">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e0a526" stroke-width="2" style="margin-bottom: 5px"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span style="font-size: 0.9rem; font-weight: 800; line-height: 1.2">15+ Years of<br/>Experience</span>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
-        {[
-          { number: '500+', label: 'Projects Completed' },
-          { number: '10+', label: 'Years Experience' },
-          { number: '100%', label: 'Licensed & Insured' },
-          { number: '5★', label: 'Average Rating' },
-        ].map(stat => (
-          <div style="padding:1.5rem;border-radius:12px;border:1px solid #e5e7eb;text-align:center">
-            <div style={`font-size:2rem;font-weight:800;color:${primary};margin-bottom:0.35rem`}>{stat.number}</div>
-            <div style="font-size:0.875rem;color:#6b7280">{stat.label}</div>
+
+      <!-- Right: Content -->
+      <div>
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; background: #f4f7f6; padding: 0.5rem 1rem; border-radius: 50px; margin-bottom: 1.5rem">
+          <div style="width: 18px; height: 18px; background: #1a2e26; border-radius: 50%; display: flex; align-items: center; justify-content: center">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
           </div>
-        ))}
+          <span style="font-size: 0.8rem; font-weight: 700; color: #1a2e26; text-transform: uppercase; letter-spacing: 1px">About {client.name}</span>
+        </div>
+        <h2 style="font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; color: #1a2e26; line-height: 1.2; margin-bottom: 2rem">
+          Our passion for gardening excellence
+        </h2>
+        <p style="color: #4b5563; font-size: 1.05rem; line-height: 1.8; margin-bottom: 2.5rem">
+          From lush landscapes and vibrant flowerbeds to eco-friendly designs and personalized garden layouts, we bring your outdoor dreams to life.
+        </p>
+
+        <!-- Feature Boxes -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 3rem">
+          <!-- Box 1 -->
+          <div style="background: #fdfaf3; padding: 1.5rem; border-radius: 15px">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem">
+              <div style="width: 40px; height: 40px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a2e26" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+              <h4 style="font-weight: 700; color: #1a2e26; font-size: 0.95rem; line-height: 1.2">Beautiful Outdoor Spaces</h4>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem">
+              <div style="display: flex; align-items: center; gap: 0.5rem; color: #6b7280; font-size: 0.85rem">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e0a526" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                House Landscape
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; color: #6b7280; font-size: 0.85rem">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e0a526" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                Rooftop Gardening
+              </div>
+            </div>
+          </div>
+          <!-- Box 2 -->
+          <div style="background: #f4f7f6; padding: 1.5rem; border-radius: 15px">
+            <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem">
+              <div style="width: 40px; height: 40px; background: #fff; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1a2e26" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              </div>
+              <h4 style="font-weight: 700; color: #1a2e26; font-size: 0.95rem; line-height: 1.2">Expert Gardening Services</h4>
+            </div>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem">
+              <div style="display: flex; align-items: center; gap: 0.5rem; color: #6b7280; font-size: 0.85rem">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e0a526" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                Focus on Outcomes
+              </div>
+              <div style="display: flex; align-items: center; gap: 0.5rem; color: #6b7280; font-size: 0.85rem">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#e0a526" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                Eco-Friendly Practices
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Block -->
+        <div style="display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap">
+          <a href="/contact" style="background: #1a2e26; color: #fff; padding: 1.15rem 2.5rem; border-radius: 50px; font-weight: 700; transition: 0.3s; box-shadow: 0 10px 20px rgba(26,46,38,0.2)" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+            Contact Us
+          </a>
+          <div style="display: flex; align-items: center; gap: 1rem">
+            <div style="width: 45px; height: 45px; background: #e0a526; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; box-shadow: 0 5px 15px rgba(224,165,38,0.3)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            </div>
+            <div style="display: flex; flex-direction: column">
+              <span style="color: #6b7280; font-size: 0.8rem; font-weight: 500">Have Questions?</span>
+              <a href={`tel:${client.phone}`} style="color: #1a2e26; font-weight: 800; font-size: 1.15rem; text-decoration: none">{client.phone}</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <section style="padding:4rem 1.5rem;background:#f9fafb">
-    <div style="max-width:1200px;margin:0 auto">
-      <h2 style="font-size:1.75rem;font-weight:700;text-align:center;margin-bottom:2.5rem">Our Values</h2>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.25rem">
+  <!-- Premium Our Values Section -->
+  <section style="padding: 8rem 1.5rem; background: #fafaf8; position: relative; overflow: hidden">
+    <!-- Floating Leaf Animation -->
+    <div style="position: absolute; top: 15%; left: 10%; animation: float 6s ease-in-out infinite; opacity: 0.6; z-index: 1">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="#2d5a3d"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+    </div>
+
+    <div class="container" style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 2">
+      <!-- Section Header -->
+      <div style="text-align: center; margin-bottom: 5rem">
+        <div style="display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1.5rem">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e0a526" stroke-width="3"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          <span style="font-size: 0.8rem; font-weight: 700; color: #e0a526; text-transform: uppercase; letter-spacing: 2px">Our Values</span>
+        </div>
+        <h2 style="font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 800; color: #1a2e26; line-height: 1.2">
+          Values that grow your dream landscape
+        </h2>
+      </div>
+
+      <!-- Values Grid -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); margin-bottom: 5rem; position: relative" class="values-grid">
         {[
-          { icon: '🤝', title: 'Integrity', desc: 'We do what we say. Honest pricing, no surprises.' },
-          { icon: '⭐', title: 'Quality', desc: 'We use quality materials and stand behind our work.' },
-          { icon: '🏠', title: 'Community', desc: `${client.city} is our home. We care about our neighbors.` },
-        ].map(v => (
-          <div style="text-align:center;padding:2rem 1.5rem;background:#fff;border-radius:12px;border:1px solid #e5e7eb">
-            <div style="font-size:2.5rem;margin-bottom:0.75rem">{v.icon}</div>
-            <h3 style="font-weight:700;margin-bottom:0.5rem">{v.title}</h3>
-            <p style="color:#6b7280;font-size:0.875rem;line-height:1.6">{v.desc}</p>
+          { 
+            icon: 'm3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z', 
+            title: 'Integrity', 
+            desc: 'We do what we say. Honest pricing, no surprises.'
+          },
+          { 
+            icon: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', 
+            title: 'Quality', 
+            desc: 'We use quality materials and stand behind our work.'
+          },
+          { 
+            icon: 'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5', 
+            title: 'Sustainability', 
+            desc: 'Eco-friendly gardening methods supporting nature.'
+          },
+          { 
+            icon: 'M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 7a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm14 14h-6', 
+            title: 'Community', 
+            desc: `${client.city} is our home. We care about our neighbors.`
+          }
+        ].map((v, i) => (
+          <div class="value-card" style="padding: 3rem 2rem; display: flex; flex-direction: column; align-items: flex-start; position: relative; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); cursor: default; z-index: 2">
+            <!-- Vertical Separator -->
+            {i > 0 && (
+              <div class="separator" style="position: absolute; left: 0; top: 20%; bottom: 20%; width: 1px; background: #e5e7eb; transition: opacity 0.3s"></div>
+            )}
+            
+            <div style="margin-bottom: 2rem; color: #1a2e26" class="icon-wrapper">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d={v.icon}/></svg>
+            </div>
+            <h3 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1rem; color: #1a2e26; transition: color 0.3s" class="card-title">{v.title}</h3>
+            <p style="color: #6b7280; font-size: 0.95rem; line-height: 1.6">{v.desc}</p>
           </div>
         ))}
       </div>
+
+      <!-- Bottom Action Bar -->
+      <div style="background: #fff; border-radius: 100px; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 30px rgba(0,0,0,0.05); max-width: 900px; margin: 0 auto">
+        <span style="color: #6b7280; font-size: 0.95rem; font-weight: 500; margin-left: 2rem">Harnessing the infinite power of nature</span>
+        <div style="display: flex; align-items: center; gap: 2rem">
+          <span style="font-weight: 700; color: #1a2e26">Request A Quote</span>
+          <a href={`tel:${client.phone}`} style="background: #e0a526; color: #fff; padding: 0.75rem 2rem; border-radius: 50px; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 0.75rem">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            {client.phone}
+          </a>
+        </div>
+      </div>
     </div>
+
+    <!-- Cutout Image: Gardening Scene -->
+    <div style="position: absolute; bottom: 0; right: 0; width: 400px; z-index: 1; pointer-events: none">
+      <img src="https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&q=80&w=800" alt="Beautiful Garden" style="width: 100%; display: block; filter: drop-shadow(0 -10px 20px rgba(0,0,0,0.1)); border-radius: 300px 0 0 0" />
+    </div>
+
+    <style is:global>
+      @keyframes float {
+        0%, 100% { transform: translateY(0) rotate(0deg); }
+        50% { transform: translateY(-20px) rotate(10deg); }
+      }
+      .value-card {
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      }
+      .value-card:hover {
+        background: #fff !important;
+        border-radius: 20px !important;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
+        z-index: 10 !important;
+        transform: translateY(-8px) !important;
+      }
+      .value-card:hover .card-title {
+        color: #e0a526 !important;
+      }
+      .value-card:hover .separator, 
+      .value-card:hover + .value-card .separator {
+        opacity: 0 !important;
+      }
+    </style>
   </section>
 
-  <section style={`padding:4rem 1.5rem;background:${primary};color:#fff;text-align:center`}>
-    <div style="max-width:700px;margin:0 auto">
-      <h2 style="font-size:1.75rem;font-weight:700;margin-bottom:1rem">Ready to Work Together?</h2>
-      <p style="opacity:0.9;margin-bottom:1.5rem">Contact us today for your free estimate.</p>
-      <a href="/contact" style="background:#fff;color:#111;padding:0.75rem 2rem;border-radius:10px;font-weight:700">Get Free Quote</a>
-    </div>
-  </section>
+  <ReadyToWork />
 
 </Layout>
